@@ -960,6 +960,22 @@ push:
       webhook: "https://open.feishu.cn/open-apis/bot/v2/hook/..."
 ```
 
+### 企业微信机器人
+
+需要填写：
+
+- Webhook
+
+示例：
+
+```yaml
+push:
+  channels:
+    - provider: wecombot
+      enable: true
+      webhook: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=..."
+```
+
 ### 邮箱
 
 需要填写：

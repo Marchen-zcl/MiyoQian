@@ -23,6 +23,7 @@ const pushChannelOptions = [
   ["telegram", "Telegram"],
   ["dingrobot", "钉钉机器人"],
   ["feishubot", "飞书机器人"],
+  ["wecombot", "企业微信机器人"],
   ["email", "邮箱"],
   ["qq", "QQ推送"]
 ];
@@ -374,6 +375,7 @@ function pushChannelFields(provider, channel) {
       field("secret", "加签 Secret", "password"),
     ],
     feishubot: [field("webhook", "Webhook", "password")],
+    wecombot: [field("webhook", "Webhook", "password")],
     email: [
       field("smtp_host", "SMTP 服务器"),
       field("smtp_port", "SMTP 端口", "number"),
@@ -455,6 +457,7 @@ function pushChannelFieldNames(provider) {
     telegram: ["token", "chat_id", "api_url"],
     dingrobot: ["webhook", "secret"],
     feishubot: ["webhook"],
+    wecombot: ["webhook"],
     email: [
       "smtp_host",
       "smtp_port",
