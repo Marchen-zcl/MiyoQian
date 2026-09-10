@@ -318,7 +318,8 @@ class WebApp:
         account = self._account_by_index(int(plan.get("account_index") or 0))
         account_name = display_account_name(account)
         goods_name = str(plan.get("goods_name") or plan.get("goods_id") or "未知商品")
-        self.log(f"开始商品兑换: {goods_name}，账号 {account_name}", "exchange")
+        log_prefix = f"【账号 {account_name}｜商品 {goods_name}】"
+        self.log(f"{log_prefix}开始商品兑换", "exchange")
         if not str(plan.get("device_fp") or "").strip():
             raise ValueError("兑换计划缺少 device_fp，请重新添加计划")
         with self.lock:
@@ -329,13 +330,13 @@ class WebApp:
                     client,
                     config,
                     account,
-                    emit=lambda message: self.log(message, "exchange"),
+                    emit=lambda message: self.log(f"{log_prefix}{message}", "exchange"),
                 ).exchange_with_retry(plan, on_progress=on_progress)
         except Exception as exc:
-            self.log(f"商品兑换请求异常: {goods_name}，账号 {account_name}，{exc}", "exchange")
+            self.log(f"{log_prefix}商品兑换请求异常: {exc}", "exchange")
             raise
         summary = f"{result.get('message', '未知结果')}({result.get('retcode')})，请求 {result.get('attempt', 1)} 次"
-        self.log(f"商品兑换结束: {goods_name}，账号 {account_name}，{summary}", "exchange")
+        self.log(f"{log_prefix}商品兑换结束: {summary}", "exchange")
         return result
 
     def shop_exchange_plan_once(self, plan_index: int) -> dict[str, Any]:
