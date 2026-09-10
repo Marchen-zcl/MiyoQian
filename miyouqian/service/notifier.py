@@ -214,6 +214,19 @@ def _send_exchange(
         request_json(client, "POST", webhook, json={"msg_type": "text", "content": {"text": "\n".join(lines)}})
         return
 
+    if provider in {"wecombot", "wecom", "企业微信"}:
+        require(webhook, "webhook")
+        request_json(
+            client,
+            "POST",
+            webhook,
+            json={
+                "msgtype": "markdown",
+                "markdown": {"content": build_exchange_markdown(title, goods_name, result, plan, success)},
+            },
+        )
+        return
+
     if provider in {"email", "smtp", "mail", "邮箱"}:
         send_mail(
             smtp_host=smtp_host,
@@ -329,6 +342,11 @@ def _send(client: httpx.Client, provider: str, push: dict[str, Any], title: str,
     if provider in {"feishubot", "feishu", "飞书"}:
         require(webhook, "webhook")
         request_json(client, "POST", webhook, json=build_feishu_post(title, message, success))
+        return
+
+    if provider in {"wecombot", "wecom", "企业微信"}:
+        require(webhook, "webhook")
+        request_json(client, "POST", webhook, json={"msgtype": "markdown", "markdown": {"content": markdown_message}})
         return
 
     if provider in {"email", "smtp", "mail", "邮箱"}:

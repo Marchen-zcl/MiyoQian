@@ -271,11 +271,12 @@ PUSH_CHANNEL_FIELDS: dict[str, tuple[str, ...]] = {
     "telegram": ("token", "chat_id", "api_url"),
     "dingrobot": ("webhook", "secret"),
     "feishubot": ("webhook",),
+    "wecombot": ("webhook",),
     "email": ("smtp_host", "smtp_port", "smtp_user", "smtp_password", "mail_from", "mail_to", "smtp_ssl"),
 }
 
 def normalize_push_channels(push: dict[str, Any]) -> list[dict[str, Any]]:
-    allowed = {"pushplus", "telegram", "dingrobot", "feishubot", "email", "qq"}
+    allowed = {"pushplus", "telegram", "dingrobot", "feishubot", "wecombot", "email", "qq"}
     raw_channels = push.get("channels")
     if not isinstance(raw_channels, list):
         raw_channels = []
